@@ -13,13 +13,15 @@ void main() {
         MaterialApp(
           home: MediaQuery(
             data: const MediaQueryData(size: Size(1200, 800)),
-            child: Builder(builder: (ctx) {
-              return NavBar(
-                currentRoute: '/',
-                onNavigate: (_) {},
-                onSaleTap: () {},
-              );
-            }),
+            child: Scaffold(
+              body: Builder(builder: (ctx) {
+                return NavBar(
+                  currentRoute: '/other',
+                  onNavigate: (_) {},
+                  onSaleTap: () {},
+                );
+              }),
+            ),
           ),
         ),
       );
@@ -41,6 +43,37 @@ void main() {
       expect(after.style?.decoration, TextDecoration.underline);
 
       await gesture.removePointer();
+    });
+    testWidgets('Clicking Shop dropdown', (tester) async {
+      // Arrange: render NavBar inside a wide MediaQuery so it shows.
+      await tester.pumpWidget(
+        MaterialApp(
+          home: MediaQuery(
+            data: const MediaQueryData(size: Size(1200, 800)),
+            child: Scaffold(
+              body: Builder(builder: (ctx) {
+                return NavBar(
+                  currentRoute: '/product',
+                  onNavigate: (_) {},
+                  onSaleTap: () {},
+                );
+              }),
+            ),
+          ),
+        ),
+      );
+
+      // Pre-check: the 'Shop' label exists.
+      final shopFinder = find.text('Shop');
+      expect(shopFinder, findsOneWidget);
+
+      // Act: simulate tap on the Shop label.
+      await tester.tap(shopFinder);
+      await tester.pumpAndSettle();
+
+      // Assert: after tap, the dropdown menu should be visible.
+      expect(find.text('Clothing'), findsOneWidget);
+      expect(find.text('Merchandise'), findsOneWidget);
     });
   });
 }
