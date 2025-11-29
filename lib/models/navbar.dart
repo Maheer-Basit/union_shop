@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 
 class NavBar extends StatefulWidget {
   final String currentRoute;
@@ -32,6 +30,11 @@ class _NavBarState extends State<NavBar> {
     }
 
     return LayoutBuilder(builder: (context, constraints) {
+
+      if (constraints.maxWidth < 600) {
+        return const SizedBox.shrink();
+      }
+
       return Center(
         child: ConstrainedBox(
           constraints: BoxConstraints(
@@ -86,7 +89,8 @@ class _HoverText extends StatefulWidget {
       required this.onTap,
       this.active = false,
       this.style,
-      super.key});
+      Key? key})
+      : super(key: key);
 
   @override
   State<_HoverText> createState() => _HoverTextState();
@@ -135,7 +139,8 @@ class _HoverDropdown extends StatefulWidget {
       required this.items,
       required this.onNavigate,
       this.active = false,
-      super.key});
+      Key? key})
+      : super(key: key);
 
   @override
   State<_HoverDropdown> createState() => _HoverDropdownState();
@@ -168,12 +173,16 @@ class _HoverDropdownState extends State<_HoverDropdown> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(widget.label,
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'Work Sans, sans-serif',
-                      fontSize: 18,
-                      fontWeight: FontWeight.w300)),
+              Text(
+                widget.label,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Work Sans, sans-serif',
+                  fontSize: 18,
+                  fontWeight: FontWeight.w300,
+                  decoration: decoration,
+                ),
+              ),
               const SizedBox(width: 4),
               const Icon(Icons.arrow_drop_down, size: 18, color: Colors.black),
             ],

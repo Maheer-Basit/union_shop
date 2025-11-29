@@ -79,27 +79,52 @@ class HomeScreen extends StatelessWidget {
                               : 16),
                       child: Row(
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              navigateToHome(context);
-                            },
-                            child: Image.network(
-                              'https://shop.upsu.net/cdn/shop/files/upsu_300x300.png?v=1614735854',
-                              height: 40,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  color: Colors.grey[300],
-                                  width: 40,
-                                  height: 40,
-                                  child: const Center(
-                                    child: Icon(Icons.image_not_supported,
-                                        color: Colors.grey),
-                                  ),
-                                );
+                          Builder(builder: (logoCtx) {
+                            final width = MediaQuery.of(logoCtx).size.width;
+                            const double minWidth =
+                                160; // when logo becomes invisible
+                            const double fullWidth =
+                                600; // width where logo is full size
+                            const double maxLogoHeight = 40;
+
+                            // Linear interpolation from minWidth..fullWidth -> 0..maxLogoHeight
+                            final double t =
+                                (width - minWidth) / (fullWidth - minWidth);
+                            final double clamped = t < 0 ? 0 : (t > 1 ? 1 : t);
+                            final double logoHeight = clamped * maxLogoHeight;
+
+                            // When the logo is effectively zero-sized, don't render it at all
+                            if (logoHeight <= 1) return const SizedBox.shrink();
+
+                            return GestureDetector(
+                              onTap: () {
+                                navigateToHome(logoCtx);
                               },
-                            ),
-                          ),
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 220),
+                                height: logoHeight,
+                                curve: Curves.easeInOut,
+                                child: Center(
+                                  child: Image.network(
+                                    'https://shop.upsu.net/cdn/shop/files/upsu_300x300.png?v=1614735854',
+                                    height: logoHeight,
+                                    fit: BoxFit.contain,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Container(
+                                        color: Colors.grey[300],
+                                        width: logoHeight,
+                                        height: logoHeight,
+                                        child: const Center(
+                                          child: Icon(Icons.image_not_supported,
+                                              color: Colors.grey),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
                           Expanded(
                             child: Builder(builder: (ctx) {
                               final current =
@@ -173,7 +198,114 @@ class HomeScreen extends StatelessWidget {
                                       minWidth: 32,
                                       minHeight: 32,
                                     ),
-                                    onPressed: placeholderCallbackForButtons,
+                                    onPressed: () {
+                                      final shopItems = const <String, String>{
+                                        'Clothing': '/',
+                                        'Merchandise': '/',
+                                        'Halloween': '/',
+                                        'Signature & Essential Range': '/',
+                                        'Portsmouth City Collection': '/',
+                                        'Pride Collection': '/',
+                                        'Graduation': '/'
+                                      };
+                                      final printShackItems =
+                                          const <String, String>{
+                                        'About': '/',
+                                        'Personalisation': '/'
+                                      };
+
+                                      showModalBottomSheet<void>(
+                                        context: context,
+                                        builder: (ctx) {
+                                          return SafeArea(
+                                            child: SingleChildScrollView(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  ListTile(
+                                                    title: const Text('Home'),
+                                                    onTap: () {
+                                                      Navigator.pop(ctx);
+                                                      navigateToHome(context);
+                                                    },
+                                                  ),
+                                                  ExpansionTile(
+                                                    title: const Text('Shop'),
+                                                    children: shopItems.keys
+                                                        .map((label) {
+                                                      return ListTile(
+                                                        title: Text(label),
+                                                        onTap: () {
+                                                          Navigator.pop(ctx);
+                                                          final route =
+                                                              shopItems[label]!;
+                                                          if (route == '/') {
+                                                            navigateToHome(
+                                                                context);
+                                                          } else {
+                                                            Navigator.pushNamed(
+                                                                context, route);
+                                                          }
+                                                        },
+                                                      );
+                                                    }).toList(),
+                                                  ),
+                                                  ExpansionTile(
+                                                    title: const Text(
+                                                        'The Print Shack'),
+                                                    children: printShackItems
+                                                        .keys
+                                                        .map((label) {
+                                                      return ListTile(
+                                                        title: Text(label),
+                                                        onTap: () {
+                                                          Navigator.pop(ctx);
+                                                          final route =
+                                                              printShackItems[
+                                                                  label]!;
+                                                          if (route == '/') {
+                                                            navigateToHome(
+                                                                context);
+                                                          } else {
+                                                            Navigator.pushNamed(
+                                                                context, route);
+                                                          }
+                                                        },
+                                                      );
+                                                    }).toList(),
+                                                  ),
+                                                  ListTile(
+                                                    title: const Text('SALE!',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.black)),
+                                                    onTap: () {
+                                                      Navigator.pop(ctx);
+                                                      placeholderCallbackForButtons();
+                                                    },
+                                                  ),
+                                                  ListTile(
+                                                    title: const Text('About'),
+                                                    onTap: () {
+                                                      Navigator.pop(ctx);
+                                                      // placeholder
+                                                    },
+                                                  ),
+                                                  ListTile(
+                                                    title:
+                                                        const Text('UPSU.net'),
+                                                    onTap: () {
+                                                      Navigator.pop(ctx);
+                                                      // placeholder external link
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
                                   ),
                               ],
                             ),
