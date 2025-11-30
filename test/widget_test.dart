@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:union_shop/models/navbar.dart';
+import 'package:union_shop/models/footer.dart';
 
 void main() {
   group('NavBar', () {
@@ -74,6 +75,27 @@ void main() {
       // Assert: after tap, the dropdown menu should be visible.
       expect(find.text('Clothing'), findsOneWidget);
       expect(find.text('Merchandise'), findsOneWidget);
+    });
+    group('Footer', () {
+      testWidgets('contains Opening Hours section', (tester) async {
+        // Arrange: render Footer inside a MaterialApp.
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: Builder(builder: (ctx) {
+                return Footer();
+              }),
+            ),
+          ),
+        );
+
+        // Assert: verify that the Opening Hours section is present.
+        expect(find.text('Opening Hours'), findsOneWidget);
+        expect(find.text('Mon - Fri: 9:00 - 17:00'), findsOneWidget);
+        expect(find.text('Saturday: 10:00 - 16:00'), findsOneWidget);
+        expect(find.text('Sunday: Closed'), findsOneWidget);
+      });
+      
     });
   });
 }
