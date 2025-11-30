@@ -18,15 +18,32 @@
     flutter test
     ```
 
+## Project structure (key files)
+- `lib/main.dart`: App entry and `HomeScreen` composition (header, hero, product grid, footer).
+- `lib/models/navbar.dart`: Desktop navigation; hover underline + dropdown menus.
+- `lib/models/hero_section.dart`: Extracted `HeroSection` widget used on the home screen.
+- `lib/models/footer.dart`: Responsive footer with three sections and social links.
+- `lib/product_page.dart`: Product detail view.
+- `test/widget_test.dart`: Widget tests for `NavBar` hover, dropdowns and footer content.
+
+## Notable implementation details
+- Navigation
+  - Desktop nav uses `MouseRegion` + stateful underline widgets and `PopupMenuButton` for dropdowns.
+  - Mobile navigation collapses into a single `Menu` icon and uses `showModalBottomSheet` + `ExpansionTile`.
+- Hero
+  - Moved to `lib/models/hero_section.dart`; background image with a dark overlay and a CTA button (configurable via `HeroSection` constructor).
+- Footer
+  - Responsive: three-column layout on wide screens (>= 800 px) and stacked sections on narrow screens.
+
+
+## Tests
+- Unit/widget tests are located in the `test/` directory. Example: `test/widget_test.dart` covers hover underline and footer content.
+- Run tests with `flutter test`.
+
 - **To-do**
   - Static Homepage:
-    - Header text []
-    - Main header image size []
-    - Main header text + dropdown []
-    - icon reconfiguration []
-    - Hero section []
     - products section []
-    - footer
+
 
 
 
