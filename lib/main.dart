@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:union_shop/product_page.dart';
 import 'package:union_shop/models/navbar.dart';
+import 'package:union_shop/models/footer.dart';
 
 void main() {
   runApp(const UnionShopApp());
@@ -199,7 +200,7 @@ class HomeScreen extends StatelessWidget {
                                       minHeight: 32,
                                     ),
                                     onPressed: () {
-                                      final shopItems = const <String, String>{
+                                      const shopItems = const <String, String>{
                                         'Clothing': '/',
                                         'Merchandise': '/',
                                         'Halloween': '/',
@@ -208,8 +209,7 @@ class HomeScreen extends StatelessWidget {
                                         'Pride Collection': '/',
                                         'Graduation': '/'
                                       };
-                                      final printShackItems =
-                                          const <String, String>{
+                                      const printShackItems = <String, String>{
                                         'About': '/',
                                         'Personalisation': '/'
                                       };
@@ -447,19 +447,7 @@ class HomeScreen extends StatelessWidget {
             ),
 
             // Footer
-            Container(
-              width: double.infinity,
-              color: Colors.grey[50],
-              padding: const EdgeInsets.all(24),
-              child: const Text(
-                'Placeholder Footer',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
+            const Footer(),
           ],
         ),
       ),
