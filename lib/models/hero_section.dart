@@ -23,8 +23,8 @@ class HeroSection extends StatefulWidget {
     this.autoPlayInterval = const Duration(seconds: 5),
     this.slides = const [
       Slide(
-        imageUrl:
-            'https://shop.upsu.net/cdn/shop/files/PortsmouthCityPostcard2_1024x1024@2x.jpg?v=1752232561',
+        //essential range image from assets folder
+        imageUrl: 'assets/images/UOP_T_Shirt.png',
         title: 'Essential range',
         subtitle: 'Explore our essential collection',
       ),
