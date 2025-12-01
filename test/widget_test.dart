@@ -84,7 +84,7 @@ void main() {
           MaterialApp(
             home: Scaffold(
               body: Builder(builder: (ctx) {
-                return Footer();
+                return const Footer();
               }),
             ),
           ),

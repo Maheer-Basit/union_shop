@@ -210,7 +210,7 @@ class HomeScreen extends StatelessWidget {
                                       minHeight: 32,
                                     ),
                                     onPressed: () {
-                                      const shopItems = const <String, String>{
+                                      const shopItems = <String, String>{
                                         'Clothing': '/',
                                         'Merchandise': '/',
                                         'Halloween 🎃': '/',

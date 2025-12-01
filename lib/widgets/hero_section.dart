@@ -29,20 +29,17 @@ class HeroSection extends StatefulWidget {
         subtitle: 'Explore our essential collection',
       ),
       Slide(
-        imageUrl:
-            'assets/images/UOP_Hoodie.png',
+        imageUrl: 'assets/images/UOP_Hoodie.png',
         title: 'The Print Shack',
         subtitle: 'Personalise your merch',
       ),
       Slide(
-        imageUrl:
-            'assets/images/Pizza.png',
+        imageUrl: 'assets/images/Pizza.png',
         title: 'Hungry?',
         subtitle: 'We got this 🍕',
       ),
       Slide(
-        imageUrl:
-            'assets/images/Portsmouth.png',
+        imageUrl: 'assets/images/Portsmouth.png',
         title: "What's your next move?",
         subtitle: 'Are you with us?',
       ),
@@ -52,8 +49,6 @@ class HeroSection extends StatefulWidget {
   @override
   State<HeroSection> createState() => _HeroSectionState();
 }
-
-
 
 class _HeroSectionState extends State<HeroSection> {
   late final PageController _pageController;
@@ -68,7 +63,7 @@ class _HeroSectionState extends State<HeroSection> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Precache images for smoother transitions
       for (final s in widget.slides) {
-        precacheImage(NetworkImage(s.imageUrl), context);
+        precacheImage(AssetImage(s.imageUrl), context);
       }
     });
 
@@ -127,7 +122,7 @@ class _HeroSectionState extends State<HeroSection> {
                 return DecoratedBox(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(slide.imageUrl),
+                      image: AssetImage(slide.imageUrl),
                       fit: BoxFit.cover,
                     ),
                   ),
