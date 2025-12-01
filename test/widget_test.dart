@@ -1,9 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:union_shop/models/navbar.dart';
-import 'package:union_shop/models/footer.dart';
-import 'package:union_shop/models/hero_section.dart';
+import 'package:union_shop/widgets/navbar.dart';
+import 'package:union_shop/widgets/footer.dart';
+import 'package:union_shop/widgets/hero_section.dart';
 
 void main() {
   group('NavBar', () {

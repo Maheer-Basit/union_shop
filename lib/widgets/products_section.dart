@@ -12,7 +12,7 @@ class ProductsSection extends StatelessWidget {
         child: Column(
           children: [
             const Text(
-              'PRODUCTS SECTION',
+              'ESSENTIAL RANGE - OVER 20% OFF!',
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.black,
