@@ -204,11 +204,11 @@ class HomeScreen extends StatelessWidget {
                                       const shopItems = const <String, String>{
                                         'Clothing': '/',
                                         'Merchandise': '/',
-                                        'Halloween': '/',
+                                        'Halloween 🎃': '/',
                                         'Signature & Essential Range': '/',
                                         'Portsmouth City Collection': '/',
-                                        'Pride Collection': '/',
-                                        'Graduation': '/'
+                                        'Pride Collection 🏳️‍🌈': '/',
+                                        'Graduation 🎓': '/'
                                       };
                                       const printShackItems = <String, String>{
                                         'About': '/',

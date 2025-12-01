@@ -30,21 +30,21 @@ class HeroSection extends StatefulWidget {
       ),
       Slide(
         imageUrl:
-            'https://shop.upsu.net/cdn/shop/files/PortsmouthCityPostcard2_1024x1024@2x.jpg?v=1752232561',
+            'assets/images/UOP_Hoodie.png',
         title: 'The Print Shack',
         subtitle: 'Personalise your merch',
       ),
       Slide(
         imageUrl:
-            'https://shop.upsu.net/cdn/shop/files/PortsmouthCityPostcard2_1024x1024@2x.jpg?v=1752232561',
+            'assets/images/Pizza.png',
         title: 'Hungry?',
-        subtitle: 'Grab a snack while you shop',
+        subtitle: 'We got this 🍕',
       ),
       Slide(
         imageUrl:
-            'https://shop.upsu.net/cdn/shop/files/PortsmouthCityPostcard2_1024x1024@2x.jpg?v=1752232561',
+            'assets/images/Portsmouth.png',
         title: "What's your next move?",
-        subtitle: 'Find the perfect item today',
+        subtitle: 'Are you with us?',
       ),
     ],
   }) : super(key: key);
@@ -52,6 +52,8 @@ class HeroSection extends StatefulWidget {
   @override
   State<HeroSection> createState() => _HeroSectionState();
 }
+
+
 
 class _HeroSectionState extends State<HeroSection> {
   late final PageController _pageController;

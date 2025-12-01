@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:union_shop/models/navbar.dart';
 import 'package:union_shop/models/footer.dart';
+import 'package:union_shop/models/hero_section.dart';
 
 void main() {
   group('NavBar', () {
@@ -77,7 +78,7 @@ void main() {
       expect(find.text('Merchandise'), findsOneWidget);
     });
     group('Footer', () {
-      testWidgets('contains Opening Hours section', (tester) async {
+      testWidgets('Contains Opening Hours section', (tester) async {
         // Arrange: render Footer inside a MaterialApp.
         await tester.pumpWidget(
           MaterialApp(
@@ -95,7 +96,25 @@ void main() {
         expect(find.text('Saturday: 10:00 - 16:00'), findsOneWidget);
         expect(find.text('Sunday: Closed'), findsOneWidget);
       });
-      
+    });
+    group('Hero Section', () {
+      testWidgets('Contains correct title/subtitle in the initial slide',
+          (tester) async {
+        // Arrange: render HeroSection inside a MaterialApp.
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: Builder(builder: (ctx) {
+                return const HeroSection();
+              }),
+            ),
+          ),        
+          );
+        // Assert: verify that the initial slide's title and subtitle are present.
+        expect(find.text('Essential range'), findsOneWidget);
+        expect(find.text('Explore our essential collection'), findsOneWidget);
+      });
+
     });
   });
 }
