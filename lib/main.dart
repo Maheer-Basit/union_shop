@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:union_shop/product_page.dart';
-import 'package:union_shop/widgets/navbar.dart';
+import 'package:union_shop/widgets/mainheader.dart';
 import 'package:union_shop/widgets/footer.dart';
 import 'package:union_shop/widgets/hero_section.dart';
 import 'package:union_shop/widgets/products_section.dart';
@@ -64,63 +64,22 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           children: [
             // Header
-            Container(
-              constraints: const BoxConstraints(minHeight: 80, maxHeight: 140),
-              color: Colors.white,
-              child: Column(
-                children: [
-                  // Top banner
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    color: const Color(0xFF4d2963),
-                    child: const Text(
-                      'BIG SALE! OUR ESSENTIAL RANGE HAS DROPPED IN PRICE! OVER 20% OFF! COME GRAB YOURS WHILE STOCK LASTS!',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontFamily: 'Work Sans, sans-serif',
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  // Main header
-                  Expanded(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width > 800
-                              ? 40
-                              : 16),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Builder(builder: (ctx) {
-                              final current =
-                                  ModalRoute.of(ctx)?.settings.name ?? '/';
-                              return NavBar(
-                                currentRoute: current,
-                                onNavigate: (route) {
-                                  if (route == '/') {
-                                    navigateToHome(ctx);
-                                  } else {
-                                    Navigator.pushNamed(ctx, route);
-                                  }
-                                },
-                                onSaleTap: placeholderCallbackForButtons,
-                                onSearchTap: placeholderCallbackForButtons,
-                                onAccountTap: placeholderCallbackForButtons,
-                                onCartTap: placeholderCallbackForButtons,
-                              );
-                            }),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            Builder(builder: (ctx) {
+              return MainHeader(
+                currentRoute: ModalRoute.of(ctx)?.settings.name ?? '/',
+                onNavigate: (route) {
+                  if (route == '/') {
+                    navigateToHome(ctx);
+                  } else {
+                    Navigator.pushNamed(ctx, route);
+                  }
+                },
+                onSaleTap: placeholderCallbackForButtons,
+                onSearchTap: placeholderCallbackForButtons,
+                onAccountTap: placeholderCallbackForButtons,
+                onCartTap: placeholderCallbackForButtons,
+              );
+            }),
 
             // Hero Section
             HeroSection(onBrowse: placeholderCallbackForButtons),

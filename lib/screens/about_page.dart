@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:union_shop/widgets/navbar.dart';
+import 'package:union_shop/widgets/mainheader.dart';
 import 'package:union_shop/widgets/footer.dart';
 
 class AboutPage extends StatelessWidget {
@@ -16,7 +16,7 @@ class AboutPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          NavBar(
+          MainHeader(
             currentRoute: '/about',
             onNavigate: (route) => Navigator.pushNamed(context, route),
             onSaleTap: () => Navigator.pushNamed(context, '/sale'),
@@ -26,15 +26,13 @@ class AboutPage extends StatelessWidget {
             child: Center(
               child: Text(
                 'About us',
-                style:
-                    TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
             ),
           ),
           const Expanded(
             child: SingleChildScrollView(
               child: Padding(
-             
                 padding: EdgeInsets.fromLTRB(20, 40, 32, 24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

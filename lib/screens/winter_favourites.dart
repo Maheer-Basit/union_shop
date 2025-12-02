@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:union_shop/widgets/mainheader.dart';
 
 class WinterFavourites extends StatelessWidget {
   const WinterFavourites({super.key});
@@ -6,13 +7,24 @@ class WinterFavourites extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Winter Favourites'),
-      ),
-      body: const Center(
-        child: Text(
-          'Winter Favourites',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            MainHeader(
+              currentRoute: '/winter-favourites',
+              onNavigate: (route) => Navigator.pushNamed(context, route),
+              onSaleTap: () => Navigator.pushNamed(context, '/sale'),
+            ),
+            const Padding(
+              padding: EdgeInsets.all(24.0),
+              child: Center(
+                child: Text(
+                  'Winter Favourites',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

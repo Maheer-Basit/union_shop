@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:union_shop/widgets/tile.dart';
-import 'package:union_shop/widgets/navbar.dart';
+import 'package:union_shop/widgets/mainheader.dart';
 import 'package:union_shop/widgets/footer.dart';
 
 class CollectionsPage extends StatelessWidget {
@@ -22,7 +22,7 @@ class CollectionsPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            NavBar(
+            MainHeader(
               currentRoute: '/collections',
               onNavigate: (route) => Navigator.pushNamed(context, route),
               onSaleTap: () => Navigator.pushNamed(context, '/sale'),
