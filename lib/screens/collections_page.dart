@@ -19,38 +19,35 @@ class CollectionsPage extends StatelessWidget {
     final cross = width > 800 ? 3 : (width > 600 ? 2 : 1);
 
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          NavBar(
-            currentRoute: '/collections',
-            onNavigate: (route) => Navigator.pushNamed(context, route),
-            onSaleTap: () => Navigator.pushNamed(context, '/sale'),
-          ),
-          // moved page title below the navbar
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 12.0),
-            child: Center(
-              child: Text(
-                'Collections',
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF3d4246),
-                  fontFamily: 'WorkSans',
-                  letterSpacing: 1.2,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            NavBar(
+              currentRoute: '/collections',
+              onNavigate: (route) => Navigator.pushNamed(context, route),
+              onSaleTap: () => Navigator.pushNamed(context, '/sale'),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 12.0),
+              child: Center(
+                child: Text(
+                  'Collections',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF3d4246),
+                    fontFamily: 'WorkSans',
+                    letterSpacing: 1.2,
+                  ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            child: Padding(
+            Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 220, vertical: 12),
               child: GridView.count(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
                 crossAxisCount: cross,
                 crossAxisSpacing: 25,
                 mainAxisSpacing: 25,
@@ -67,10 +64,9 @@ class CollectionsPage extends StatelessWidget {
                 }).toList(),
               ),
             ),
-          ),
-          // footer at the bottom
-          const Footer(),
-        ],
+            const Footer(),
+          ],
+        ),
       ),
     );
   }
