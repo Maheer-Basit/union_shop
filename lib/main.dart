@@ -26,8 +26,6 @@ class UnionShopApp extends StatelessWidget {
       home: const HomeScreen(),
       // By default, the app starts at the '/' route, which is the HomeScreen
       initialRoute: '/',
-      // When navigating to '/product', build and return the ProductPage
-      // In your browser, try this link: http://localhost:49856/#/product
       routes: {
         '/product': (context) => const ProductPage(),
         '/about': (context) => const AboutPage(),
@@ -94,52 +92,6 @@ class HomeScreen extends StatelessWidget {
                               : 16),
                       child: Row(
                         children: [
-                          Builder(builder: (logoCtx) {
-                            final width = MediaQuery.of(logoCtx).size.width;
-                            const double minWidth =
-                                160; // when logo becomes invisible
-                            const double fullWidth =
-                                600; // width where logo is full size
-                            const double maxLogoHeight = 40;
-
-                            // Linear interpolation from minWidth..fullWidth -> 0..maxLogoHeight
-                            final double t =
-                                (width - minWidth) / (fullWidth - minWidth);
-                            final double clamped = t < 0 ? 0 : (t > 1 ? 1 : t);
-                            final double logoHeight = clamped * maxLogoHeight;
-
-                            // When the logo is effectively zero-sized, don't render it at all
-                            if (logoHeight <= 1) return const SizedBox.shrink();
-
-                            return GestureDetector(
-                              onTap: () {
-                                navigateToHome(logoCtx);
-                              },
-                              child: AnimatedContainer(
-                                duration: const Duration(milliseconds: 220),
-                                height: logoHeight,
-                                curve: Curves.easeInOut,
-                                child: Center(
-                                  child: Image.network(
-                                    'https://shop.upsu.net/cdn/shop/files/upsu_300x300.png?v=1614735854',
-                                    height: logoHeight,
-                                    fit: BoxFit.contain,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Container(
-                                        color: Colors.grey[300],
-                                        width: logoHeight,
-                                        height: logoHeight,
-                                        child: const Center(
-                                          child: Icon(Icons.image_not_supported,
-                                              color: Colors.grey),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
-                            );
-                          }),
                           Expanded(
                             child: Builder(builder: (ctx) {
                               final current =
@@ -154,175 +106,11 @@ class HomeScreen extends StatelessWidget {
                                   }
                                 },
                                 onSaleTap: placeholderCallbackForButtons,
+                                onSearchTap: placeholderCallbackForButtons,
+                                onAccountTap: placeholderCallbackForButtons,
+                                onCartTap: placeholderCallbackForButtons,
                               );
                             }),
-                          ),
-                          ConstrainedBox(
-                            constraints: const BoxConstraints(maxWidth: 600),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.search,
-                                    size: 32,
-                                    color: Color(0xFF3d4246),
-                                  ),
-                                  padding: const EdgeInsets.all(8),
-                                  constraints: const BoxConstraints(
-                                    minWidth: 32,
-                                    minHeight: 32,
-                                  ),
-                                  onPressed: placeholderCallbackForButtons,
-                                ),
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.person_outline,
-                                    size: 32,
-                                    color: Color(0xFF3d4246),
-                                  ),
-                                  padding: const EdgeInsets.all(8),
-                                  constraints: const BoxConstraints(
-                                    minWidth: 32,
-                                    minHeight: 32,
-                                  ),
-                                  onPressed: placeholderCallbackForButtons,
-                                ),
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.shopping_bag_outlined,
-                                    size: 32,
-                                    color: Color(0xFF3d4246),
-                                  ),
-                                  padding: const EdgeInsets.all(8),
-                                  constraints: const BoxConstraints(
-                                    minWidth: 32,
-                                    minHeight: 32,
-                                  ),
-                                  onPressed: placeholderCallbackForButtons,
-                                ),
-                                if (MediaQuery.of(context).size.width < 600)
-                                  IconButton(
-                                    icon: const Icon(
-                                      Icons.menu,
-                                      size: 32,
-                                      color: Color(0xFF3d4246),
-                                    ),
-                                    padding: const EdgeInsets.all(8),
-                                    constraints: const BoxConstraints(
-                                      minWidth: 32,
-                                      minHeight: 32,
-                                    ),
-                                    onPressed: () {
-                                      const shopItems = <String, String>{
-                                        'Clothing': '/',
-                                        'Merchandise': '/',
-                                        'Halloween 🎃': '/',
-                                        'Signature & Essential Range': '/',
-                                        'Portsmouth City Collection': '/',
-                                        'Pride Collection 🏳️‍🌈': '/',
-                                        'Graduation 🎓': '/'
-                                      };
-                                      const printShackItems = <String, String>{
-                                        'About': '/',
-                                        'Personalisation': '/'
-                                      };
-
-                                      showModalBottomSheet<void>(
-                                        context: context,
-                                        builder: (ctx) {
-                                          return SafeArea(
-                                            child: SingleChildScrollView(
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  ListTile(
-                                                    title: const Text('Home'),
-                                                    onTap: () {
-                                                      Navigator.pop(ctx);
-                                                      navigateToHome(context);
-                                                    },
-                                                  ),
-                                                  ExpansionTile(
-                                                    title: const Text('Shop'),
-                                                    children: shopItems.keys
-                                                        .map((label) {
-                                                      return ListTile(
-                                                        title: Text(label),
-                                                        onTap: () {
-                                                          Navigator.pop(ctx);
-                                                          final route =
-                                                              shopItems[label]!;
-                                                          if (route == '/') {
-                                                            navigateToHome(
-                                                                context);
-                                                          } else {
-                                                            Navigator.pushNamed(
-                                                                context, route);
-                                                          }
-                                                        },
-                                                      );
-                                                    }).toList(),
-                                                  ),
-                                                  ExpansionTile(
-                                                    title: const Text(
-                                                        'The Print Shack'),
-                                                    children: printShackItems
-                                                        .keys
-                                                        .map((label) {
-                                                      return ListTile(
-                                                        title: Text(label),
-                                                        onTap: () {
-                                                          Navigator.pop(ctx);
-                                                          final route =
-                                                              printShackItems[
-                                                                  label]!;
-                                                          if (route == '/') {
-                                                            navigateToHome(
-                                                                context);
-                                                          } else {
-                                                            Navigator.pushNamed(
-                                                                context, route);
-                                                          }
-                                                        },
-                                                      );
-                                                    }).toList(),
-                                                  ),
-                                                  ListTile(
-                                                    title: const Text('SALE!',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.black)),
-                                                    onTap: () {
-                                                      Navigator.pop(ctx);
-                                                      placeholderCallbackForButtons();
-                                                    },
-                                                  ),
-                                                  ListTile(
-                                                    title: const Text('About'),
-                                                    onTap: () {
-                                                      Navigator.pop(ctx);
-                                                      // placeholder
-                                                    },
-                                                  ),
-                                                  ListTile(
-                                                    title:
-                                                        const Text('UPSU.net'),
-                                                    onTap: () {
-                                                      Navigator.pop(ctx);
-                                                      // placeholder external link
-                                                    },
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    },
-                                  ),
-                              ],
-                            ),
                           ),
                         ],
                       ),
@@ -346,5 +134,3 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-
-

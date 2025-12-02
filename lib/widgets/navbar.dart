@@ -4,77 +4,246 @@ class NavBar extends StatefulWidget {
   final String currentRoute;
   final void Function(String route) onNavigate;
   final VoidCallback onSaleTap;
+  final VoidCallback? onSearchTap;
+  final VoidCallback? onAccountTap;
+  final VoidCallback? onCartTap;
 
   const NavBar({
-    required this.currentRoute,
+    Key? key,
+    this.currentRoute = '/',
     required this.onNavigate,
     required this.onSaleTap,
-    super.key,
-  });
+    this.onSearchTap,
+    this.onAccountTap,
+    this.onCartTap,
+  }) : super(key: key);
 
   @override
   State<NavBar> createState() => _NavBarState();
 }
 
 class _NavBarState extends State<NavBar> {
-  @override
-  Widget build(BuildContext context) {
-    Widget hoverableText(String label,
-        {required VoidCallback onTap, bool active = false, TextStyle? style}) {
-      return _HoverText(
-        label: label,
-        active: active,
-        style: style,
-        onTap: onTap,
+  static const shopItems = <String, String>{
+    'Clothing': '/',
+    'Merchandise': '/',
+    'Halloween 🎃': '/',
+    'Signature & Essential Range': '/',
+    'Portsmouth City Collection': '/',
+    'Pride Collection 🏳️‍🌈': '/',
+    'Graduation 🎓': '/'
+  };
+
+  static const printShackItems = <String, String>{
+    'About': '/',
+    'Personalisation': '/'
+  };
+
+  void _openMobileMenu(BuildContext ctx) {
+    showModalBottomSheet<void>(
+      context: ctx,
+      builder: (ctx) {
+        return SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  title: const Text('Home'),
+                  onTap: () {
+                    Navigator.pop(ctx);
+                    widget.onNavigate('/');
+                  },
+                ),
+                ExpansionTile(
+                  title: const Text('Shop'),
+                  children: shopItems.keys.map((label) {
+                    return ListTile(
+                      title: Text(label),
+                      onTap: () {
+                        Navigator.pop(ctx);
+                        final route = shopItems[label]!;
+                        if (route == '/') {
+                          widget.onNavigate('/');
+                        } else {
+                          widget.onNavigate(route);
+                        }
+                      },
+                    );
+                  }).toList(),
+                ),
+                ExpansionTile(
+                  title: const Text('The Print Shack'),
+                  children: printShackItems.keys.map((label) {
+                    return ListTile(
+                      title: Text(label),
+                      onTap: () {
+                        Navigator.pop(ctx);
+                        final route = printShackItems[label]!;
+                        if (route == '/') {
+                          widget.onNavigate('/');
+                        } else {
+                          widget.onNavigate(route);
+                        }
+                      },
+                    );
+                  }).toList(),
+                ),
+                ListTile(
+                  title: const Text('SALE!',
+                      style: TextStyle(color: Colors.black)),
+                  onTap: () {
+                    Navigator.pop(ctx);
+                    widget.onSaleTap();
+                  },
+                ),
+                ListTile(
+                  title: const Text('About'),
+                  onTap: () {
+                    Navigator.pop(ctx);
+                    widget.onNavigate('/about');
+                  },
+                ),
+                ListTile(
+                  title: const Text('UPSU.net'),
+                  onTap: () {
+                    Navigator.pop(ctx);
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildIcons(BuildContext ctx, double width) {
+    
+    const breakpoint = 750;
+   
+    if (width < breakpoint) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.search, size: 32, color: Color(0xFF3d4246)),
+            padding: const EdgeInsets.all(8),
+            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+            onPressed: widget.onSearchTap ?? () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.person_outline,
+                size: 32, color: Color(0xFF3d4246)),
+            padding: const EdgeInsets.all(8),
+            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+            onPressed: widget.onAccountTap ?? () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.shopping_bag_outlined,
+                size: 32, color: Color(0xFF3d4246)),
+            padding: const EdgeInsets.all(8),
+            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+            onPressed: widget.onCartTap ?? () {},
+          ),
+          // menu icon at the far right
+          IconButton(
+            icon: const Icon(Icons.menu, size: 32, color: Color(0xFF3d4246)),
+            padding: const EdgeInsets.all(8),
+            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+            onPressed: () => _openMobileMenu(ctx),
+          ),
+        ],
       );
     }
 
-    return LayoutBuilder(builder: (context, constraints) {
-
-      if (constraints.maxWidth < 600) {
-        return const SizedBox.shrink();
-      }
-
-      return Center(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-              maxWidth:
-                  constraints.maxWidth > 1000 ? 800 : constraints.maxWidth),
-          child: Wrap(
-            alignment: WrapAlignment.center,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            spacing: 16,
-            children: [
-              hoverableText('Home',
-                  onTap: () => widget.onNavigate('/'),
-                  active: widget.currentRoute == '/'),
-              _HoverDropdown(
-                label: 'Shop',
-                active: widget.currentRoute == '/product',
-                items: const {
-                  'Clothing': '/',
-                  'Merchandise': '/',
-                  'Halloween 🎃': '/',
-                  'Signature & Essential Range': '/',
-                  'Portsmouth City Collection': '/',
-                  'Pride Collection 🏳️‍🌈': '/',
-                  'Graduation 🎓': '/'
-                },
-                onNavigate: (route) => widget.onNavigate(route),
-              ),
-              _HoverDropdown(
-                label: 'The Print Shack',
-                items: const {'About': '/', 'Personalisation': '/'},
-                onNavigate: (route) => widget.onNavigate(route),
-              ),
-              hoverableText('SALE!', onTap: widget.onSaleTap),
-              hoverableText('About' , 
-              onTap: () => widget.onNavigate('/about'),
-              active: widget.currentRoute == '/about'),
-              hoverableText('UPSU.net', onTap: () {}),
-            ],
-          ),
+    // Desktop icons
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          icon: const Icon(Icons.search, size: 32, color: Color(0xFF3d4246)),
+          padding: const EdgeInsets.all(8),
+          constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+          onPressed: widget.onSearchTap ?? () {},
         ),
+        IconButton(
+          icon: const Icon(Icons.person_outline,
+              size: 32, color: Color(0xFF3d4246)),
+          padding: const EdgeInsets.all(8),
+          constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+          onPressed: widget.onAccountTap ?? () {},
+        ),
+        IconButton(
+          icon: const Icon(Icons.shopping_bag_outlined,
+              size: 32, color: Color(0xFF3d4246)),
+          padding: const EdgeInsets.all(8),
+          constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+          onPressed: widget.onCartTap ?? () {},
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (context, constraints) {
+      final width = MediaQuery.of(context).size.width;
+      const breakpoint = 750;
+      return Row(
+        children: [
+          // Logo area (left)
+          SizedBox(
+            width: 200,
+            child: GestureDetector(
+              onTap: () => widget.onNavigate('/'),
+              child: const Align(
+                alignment: Alignment.centerLeft,
+                child: Image(
+                  image: AssetImage('assets/images/upsu.png'),
+                  height: 50,
+                ),
+            ),
+          ),
+          ),
+
+          // Center links (hidden on narrow screens)
+          if (width >= breakpoint)
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  _HoverText(
+                    label: 'Home',
+                    onTap: () => widget.onNavigate('/'),
+                    active: widget.currentRoute == '/',
+                  ),
+                  _HoverDropdown(
+                    label: 'Shop',
+                    items: shopItems,
+                    onNavigate: (route) => widget.onNavigate(route),
+                    active: widget.currentRoute.startsWith('/product') ||
+                        widget.currentRoute == '/product',
+                  ),
+                  _HoverDropdown(
+                    label: 'The Print Shack',
+                    items: printShackItems,
+                    onNavigate: (route) => widget.onNavigate(route),
+                    active: false,
+                  ),
+                  _HoverText(label: 'SALE!', onTap: widget.onSaleTap),
+                  _HoverText(
+                      label: 'About', onTap: () => widget.onNavigate('/about')),
+                  _HoverText(label: 'UPSU.net', onTap: () {}),
+                ],
+              ),
+            )
+          else
+            const Spacer(),
+
+          // Icons area (right)
+          _buildIcons(context, width),
+        ],
       );
     });
   }
