@@ -21,7 +21,6 @@ class AboutPage extends StatelessWidget {
             onNavigate: (route) => Navigator.pushNamed(context, route),
             onSaleTap: () => Navigator.pushNamed(context, '/sale'),
           ),
-          // page title moved under navbar
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 12.0),
             child: Center(
@@ -35,7 +34,7 @@ class AboutPage extends StatelessWidget {
           const Expanded(
             child: SingleChildScrollView(
               child: Padding(
-                // left gap of 200, move content down with top padding
+             
                 padding: EdgeInsets.fromLTRB(20, 40, 32, 24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
