@@ -136,7 +136,9 @@ class _NavBarState extends State<NavBar> {
                 size: 32, color: Color(0xFF3d4246)),
             padding: const EdgeInsets.all(8),
             constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-            onPressed: widget.onAccountTap ?? () {},
+            onPressed: () {
+              Navigator.pushNamed(ctx, '/sign-in');
+            }
           ),
           IconButton(
             icon: const Icon(Icons.shopping_bag_outlined,
@@ -145,7 +147,7 @@ class _NavBarState extends State<NavBar> {
             constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
             onPressed: widget.onCartTap ?? () {},
           ),
-          // menu icon at the far right
+
           IconButton(
             icon: const Icon(Icons.menu, size: 32, color: Color(0xFF3d4246)),
             padding: const EdgeInsets.all(8),
