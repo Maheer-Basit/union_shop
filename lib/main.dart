@@ -5,6 +5,8 @@ import 'package:union_shop/widgets/footer.dart';
 import 'package:union_shop/widgets/hero_section.dart';
 import 'package:union_shop/widgets/products_section.dart';
 import 'package:union_shop/screens/about_page.dart';
+import 'package:union_shop/screens/collections_page.dart';
+import 'package:union_shop/screens/winter_favourites.dart';
 
 void main() {
   runApp(const UnionShopApp());
@@ -29,6 +31,8 @@ class UnionShopApp extends StatelessWidget {
       routes: {
         '/product': (context) => const ProductPage(),
         '/about': (context) => const AboutPage(),
+        '/collections': (context) => const CollectionsPage(),
+        '/winter-favourites': (context) => const WinterFavourites(),
       },
     );
   }
