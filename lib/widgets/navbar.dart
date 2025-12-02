@@ -54,11 +54,11 @@ class _NavBarState extends State<NavBar> {
                 items: const {
                   'Clothing': '/',
                   'Merchandise': '/',
-                  'Halloween': '/',
+                  'Halloween 🎃': '/',
                   'Signature & Essential Range': '/',
                   'Portsmouth City Collection': '/',
-                  'Pride Collection': '/',
-                  'Graduation': '/'
+                  'Pride Collection 🏳️‍🌈': '/',
+                  'Graduation 🎓': '/'
                 },
                 onNavigate: (route) => widget.onNavigate(route),
               ),
