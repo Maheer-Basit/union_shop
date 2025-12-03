@@ -17,7 +17,7 @@ class CollectionTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: ClipRRect(
+      child: ClipRect(
         child: SizedBox(
           height: height,
           child: Stack(
@@ -93,14 +93,12 @@ class _ProductTileState extends State<ProductTile> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
- 
           MouseRegion(
             onEnter: _onEnter,
             onExit: _onExit,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(4),
+            child: ClipRect(
               child: AspectRatio(
-                aspectRatio: 3 / 4,
+                aspectRatio: 1 / 1,
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
@@ -108,7 +106,6 @@ class _ProductTileState extends State<ProductTile> {
                       widget.image,
                       fit: BoxFit.cover,
                     ),
-                   
                     AnimatedContainer(
                       duration: const Duration(milliseconds: 180),
                       color: _hovering
@@ -123,14 +120,14 @@ class _ProductTileState extends State<ProductTile> {
           const SizedBox(height: 8),
           Text(
             widget.title,
-            style: const TextStyle(fontSize: 12, color: Colors.black87),
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 4),
           Text(
             widget.price,
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+            style: const TextStyle(fontSize: 14, color: Colors.black54),
           ),
         ],
       ),

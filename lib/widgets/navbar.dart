@@ -233,7 +233,7 @@ class _NavBarState extends State<NavBar> {
                     onNavigate: (route) => widget.onNavigate(route),
                     active: false,
                   ),
-                  _HoverText(label: 'SALE!', onTap: widget.onSaleTap),
+                  _HoverText(label: 'SALE!', onTap: () => widget.onNavigate('/sale')),
                   _HoverText(
                       label: 'About', onTap: () => widget.onNavigate('/about')),
                   _HoverText(label: 'UPSU.net', onTap: () {}),

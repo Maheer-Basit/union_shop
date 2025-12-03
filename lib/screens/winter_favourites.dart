@@ -45,13 +45,16 @@ class WinterFavourites extends StatelessWidget {
             Builder(builder: (ctx) {
               final width = MediaQuery.of(ctx).size.width;
               final cross = width > 800 ? 3 : (width > 600 ? 2 : 1);
+              final sidePadding =
+                  width > 1200 ? 120.0 : (width > 800 ? 64.0 : 28.0);
               final items = List.generate(
-                  6,
-                  (i) => {
-                        'title': 'Product ${i + 1}',
-                        'image': 'assets/images/UOP_Jacket.png',
-                        'price': '£${(20 + i * 5).toString()}.00'
-                      });
+                6,
+                (i) => {
+                  'title': 'Product ${i + 1}',
+                  'image': 'assets/images/UOP_Jacket.png',
+                  'price': '£${(20 + i * 5).toString()}.00'
+                },
+              );
 
               return Column(
                 children: [
@@ -69,15 +72,15 @@ class WinterFavourites extends StatelessWidget {
                     onSortChanged: (v) {},
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 12),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: sidePadding, vertical: 12),
                     child: GridView.count(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       crossAxisCount: cross,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
-                      childAspectRatio: 0.65,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 20,
+                      childAspectRatio: 0.8,
                       children: items.map((m) {
                         return ProductTile(
                           image: m['image']!,
