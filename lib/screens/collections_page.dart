@@ -12,7 +12,7 @@ class CollectionsPage extends StatelessWidget {
         6,
         (i) => {
               'title': 'Collection ${i + 1}',
-              'image': 'assets/images/UOP_T_Shirt.png',
+              'image': 'assets/images/UOP_Jacket.png',
             });
 
     final width = MediaQuery.of(context).size.width;
