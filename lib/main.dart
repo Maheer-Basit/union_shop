@@ -9,6 +9,7 @@ import 'package:union_shop/screens/collections_page.dart';
 import 'package:union_shop/screens/winter_favourites.dart';
 import 'package:union_shop/screens/sign_in.dart';
 import 'package:union_shop/screens/sale.dart';
+import 'package:union_shop/screens/product_item.dart';
 
 void main() {
   runApp(const UnionShopApp());
@@ -35,6 +36,7 @@ class UnionShopApp extends StatelessWidget {
         '/winter-favourites': (context) => const WinterFavourites(),
         '/sign-in': (context) => const SignIn(),
         '/sale': (context) => const SalePage(),
+        '/product-item': (context) => const ProductItemPage(),
       },
     );
   }
