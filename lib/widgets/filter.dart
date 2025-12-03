@@ -23,6 +23,8 @@ class FilterBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final borderColor = Colors.grey.shade300;
+    final width = MediaQuery.of(context).size.width;
+    final isNarrow = width < 750;
 
     return Container(
       decoration: BoxDecoration(
@@ -33,35 +35,78 @@ class FilterBar extends StatelessWidget {
         ),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Row(
-        children: [
-          // Left side: filter/sort controls
-          Expanded(
-            child: Row(
+      child: isNarrow
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text('Filter by', style: TextStyle(fontSize: 14)),
-                const SizedBox(width: 8),
-                _buildDropdown(filters, filterValue, onFilterChanged),
-                const SizedBox(width: 20),
-                const Text('Sort by', style: TextStyle(fontSize: 14)),
-                const SizedBox(width: 8),
-                _buildDropdown(sorts, sortValue, onSortChanged),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Filter by',
+                              style: TextStyle(fontSize: 14)),
+                          const SizedBox(height: 6),
+                          _buildDropdown(filters, filterValue, onFilterChanged,
+                              expand: true),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Sort by', style: TextStyle(fontSize: 14)),
+                          const SizedBox(height: 6),
+                          _buildDropdown(sorts, sortValue, onSortChanged,
+                              expand: true),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    '$totalProducts products',
+                    style: const TextStyle(fontSize: 14, color: Colors.black54),
+                  ),
+                ),
+              ],
+            )
+          : Row(
+              children: [
+                // Left side: filter/sort controls
+                Expanded(
+                  child: Row(
+                    children: [
+                      const Text('Filter by', style: TextStyle(fontSize: 14)),
+                      const SizedBox(width: 8),
+                      _buildDropdown(filters, filterValue, onFilterChanged),
+                      const SizedBox(width: 20),
+                      const Text('Sort by', style: TextStyle(fontSize: 14)),
+                      const SizedBox(width: 8),
+                      _buildDropdown(sorts, sortValue, onSortChanged),
+                    ],
+                  ),
+                ),
+
+                // Right side: total products
+                Text(
+                  '$totalProducts products',
+                  style: const TextStyle(fontSize: 14, color: Colors.black54),
+                ),
               ],
             ),
-          ),
-
-          // Right side: total products
-          Text(
-            '$totalProducts products',
-            style: const TextStyle(fontSize: 14, color: Colors.black54),
-          ),
-        ],
-      ),
     );
   }
 
   Widget _buildDropdown(
-      List<String> items, String? value, ValueChanged<String?>? onChanged) {
+      List<String> items, String? value, ValueChanged<String?>? onChanged,
+      {bool expand = false}) {
     final isEmpty = items.isEmpty;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -70,16 +115,33 @@ class FilterBar extends StatelessWidget {
         border: Border.all(color: Colors.grey.shade200),
         color: Colors.white,
       ),
-      child: DropdownButton<String>(
-        value: isEmpty ? null : value ?? items.first,
-        items: items
-            .map((i) => DropdownMenuItem<String>(value: i, child: Text(i)))
-            .toList(),
-        onChanged: isEmpty ? null : onChanged,
-        underline: const SizedBox.shrink(),
-        isDense: true,
-        style: const TextStyle(color: Colors.black87, fontSize: 14),
-      ),
+      child: expand
+          ? SizedBox(
+              width: double.infinity,
+              child: DropdownButton<String>(
+                value: isEmpty ? null : value ?? items.first,
+                items: items
+                    .map((i) =>
+                        DropdownMenuItem<String>(value: i, child: Text(i)))
+                    .toList(),
+                onChanged: isEmpty ? null : onChanged,
+                underline: const SizedBox.shrink(),
+                isDense: true,
+                isExpanded: true,
+                style: const TextStyle(color: Colors.black87, fontSize: 14),
+              ),
+            )
+          : DropdownButton<String>(
+              value: isEmpty ? null : value ?? items.first,
+              items: items
+                  .map(
+                      (i) => DropdownMenuItem<String>(value: i, child: Text(i)))
+                  .toList(),
+              onChanged: isEmpty ? null : onChanged,
+              underline: const SizedBox.shrink(),
+              isDense: true,
+              style: const TextStyle(color: Colors.black87, fontSize: 14),
+            ),
     );
   }
 }
