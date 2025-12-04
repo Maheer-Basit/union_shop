@@ -1,25 +1,93 @@
 import 'package:flutter/material.dart';
+import 'package:union_shop/models/product.dart';
 
 class ProductItemWidget extends StatefulWidget {
-  const ProductItemWidget({Key? key}) : super(key: key);
+  final Product product;
+  const ProductItemWidget({Key? key, required this.product}) : super(key: key);
 
   @override
   State<ProductItemWidget> createState() => _ProductItemWidgetState();
 }
 
 class _ProductItemWidgetState extends State<ProductItemWidget> {
-  final List<String> sizeOptions = ['Small', 'Medium', 'Large'];
-  final List<String> colorOptions = ['Red', 'Blue', 'Green'];
+  late List<String> sizeOptions;
+  late List<String> colorOptions;
 
   String? selectedSize;
   String? selectedColor;
+  late String _currentImageUrl;
+  int _selectedThumbIndex = 0;
   final TextEditingController customTextController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    selectedSize = sizeOptions.first;
-    selectedColor = colorOptions.first;
+    debugPrint('ProductItemWidget:initState for ${widget.product.id}');
+    _currentImageUrl = widget.product.imageUrl;
+    colorOptions = widget.product.colors.isNotEmpty
+        ? widget.product.colors
+        : ['Red', 'Blue', 'Green'];
+    sizeOptions = widget.product.sizes.isNotEmpty
+        ? widget.product.sizes
+        : ['Small', 'Medium', 'Large'];
+
+    selectedSize = sizeOptions.isNotEmpty ? sizeOptions.first : null;
+    selectedColor = colorOptions.isNotEmpty ? colorOptions.first : null;
+  }
+
+  Widget _buildImageColumn() {
+    final images = widget.product.images;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        AspectRatio(
+          aspectRatio: 4 / 5,
+          child: ClipRRect(
+            borderRadius: BorderRadius.zero,
+            child: Image.asset(
+              _currentImageUrl,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        if (images.isNotEmpty) ...[
+          const SizedBox(height: 8),
+          SizedBox(
+            height: 64,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: images.length,
+              separatorBuilder: (_, __) => const SizedBox(width: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              itemBuilder: (context, i) {
+                final img = images[i];
+                final selected = img == _currentImageUrl;
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _currentImageUrl = img;
+                      _selectedThumbIndex = i;
+                    });
+                  },
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 150),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: selected ? Colors.black : Colors.grey.shade300,
+                          width: selected ? 2 : 1),
+                    ),
+                    width: 64,
+                    child: ClipRRect(
+                      child: Image.asset(img, fit: BoxFit.cover),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ]
+      ],
+    );
   }
 
   @override
@@ -52,16 +120,7 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                         flex: 4,
                         child: ConstrainedBox(
                           constraints: const BoxConstraints(maxWidth: 420),
-                          child: AspectRatio(
-                            aspectRatio: 4 / 5,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.zero,
-                              child: Image.asset(
-                                'assets/images/UOP_Jacket.png',
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
+                          child: _buildImageColumn(),
                         ),
                       ),
                       const SizedBox(width: 24),
@@ -83,12 +142,12 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
   List<Widget> _buildContent(bool isNarrow) {
     return [
       Text(
-        'Classic University Jacket',
+        widget.product.name,
         style: Theme.of(context).textTheme.titleLarge,
       ),
       const SizedBox(height: 8),
       Text(
-        '£11.50',
+        '£${widget.product.price.toStringAsFixed(2)}',
         style: Theme.of(context)
             .textTheme
             .headlineSmall
@@ -111,6 +170,8 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                 const Text('Colour', style: TextStyle(fontSize: 14)),
                 const SizedBox(height: 6),
                 _buildDropdown(colorOptions, selectedColor, (v) {
+                  debugPrint(
+                      'selectedColor set -> $v for ${widget.product.id}');
                   setState(() => selectedColor = v);
                 }),
               ],
@@ -125,6 +186,7 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                 const Text('Size', style: TextStyle(fontSize: 14)),
                 const SizedBox(height: 6),
                 _buildDropdown(sizeOptions, selectedSize, (v) {
+                  debugPrint('selectedSize set -> $v for ${widget.product.id}');
                   setState(() => selectedSize = v);
                 }),
               ],
@@ -186,9 +248,9 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
       const Center(
         child: Text(
           'More payment options',
-          style: TextStyle(color: Colors.black54, decoration: TextDecoration.underline),
+          style: TextStyle(
+              color: Colors.black54, decoration: TextDecoration.underline),
         ),
-      
       )
     ];
   }
@@ -204,11 +266,16 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
         color: Colors.white,
       ),
       child: DropdownButton<String>(
-        value: isEmpty ? null : value ?? items.first,
+        value: isEmpty ? null : value,
+        hint: const Text('Select'),
         items: items
             .map((i) => DropdownMenuItem<String>(value: i, child: Text(i)))
             .toList(),
-        onChanged: isEmpty ? null : onChanged,
+        onChanged: isEmpty
+            ? null
+            : (v) {
+                onChanged(v);
+              },
         underline: const SizedBox.shrink(),
         isDense: true,
         isExpanded: true,

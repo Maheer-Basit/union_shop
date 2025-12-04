@@ -1,4 +1,4 @@
-  import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 class ProductsSection extends StatelessWidget {
   const ProductsSection({Key? key}) : super(key: key);
@@ -28,24 +28,28 @@ class ProductsSection extends StatelessWidget {
               mainAxisSpacing: 48,
               children: const [
                 ProductCard(
+                  id: 'p1',
                   title: 'Placeholder Product 1',
                   price: '£10.00',
                   imageUrl:
                       'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
                 ),
                 ProductCard(
+                  id: 'p2',
                   title: 'Placeholder Product 2',
                   price: '£15.00',
                   imageUrl:
                       'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
                 ),
                 ProductCard(
+                  id: 'p1',
                   title: 'Placeholder Product 3',
                   price: '£20.00',
                   imageUrl:
                       'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
                 ),
                 ProductCard(
+                  id: 'p2',
                   title: 'Placeholder Product 4',
                   price: '£25.00',
                   imageUrl:
@@ -61,12 +65,14 @@ class ProductsSection extends StatelessWidget {
 }
 
 class ProductCard extends StatelessWidget {
+  final String id;
   final String title;
   final String price;
   final String imageUrl;
 
   const ProductCard({
     Key? key,
+    required this.id,
     required this.title,
     required this.price,
     required this.imageUrl,
@@ -76,7 +82,7 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/product');
+        Navigator.pushNamed(context, '/product-item', arguments: id);
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

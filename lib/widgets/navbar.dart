@@ -118,9 +118,8 @@ class _NavBarState extends State<NavBar> {
   }
 
   Widget _buildIcons(BuildContext ctx, double width) {
-    
     const breakpoint = 750;
-   
+
     if (width < breakpoint) {
       return Row(
         mainAxisSize: MainAxisSize.min,
@@ -132,14 +131,13 @@ class _NavBarState extends State<NavBar> {
             onPressed: widget.onSearchTap ?? () {},
           ),
           IconButton(
-            icon: const Icon(Icons.person_outline,
-                size: 32, color: Color(0xFF3d4246)),
-            padding: const EdgeInsets.all(8),
-            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-            onPressed: () {
-              Navigator.pushNamed(ctx, '/sign-in');
-            }
-          ),
+              icon: const Icon(Icons.person_outline,
+                  size: 32, color: Color(0xFF3d4246)),
+              padding: const EdgeInsets.all(8),
+              constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+              onPressed: () {
+                Navigator.pushNamed(ctx, '/sign-in');
+              }),
           IconButton(
             icon: const Icon(Icons.shopping_bag_outlined,
                 size: 32, color: Color(0xFF3d4246)),
@@ -147,7 +145,6 @@ class _NavBarState extends State<NavBar> {
             constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
             onPressed: widget.onCartTap ?? () {},
           ),
-
           IconButton(
             icon: const Icon(Icons.menu, size: 32, color: Color(0xFF3d4246)),
             padding: const EdgeInsets.all(8),
@@ -190,54 +187,76 @@ class _NavBarState extends State<NavBar> {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       final width = MediaQuery.of(context).size.width;
-      const breakpoint = 750;
+      const linksVisibleThreshold = 750;
+      const double logoMaxWidth = 200.0;
+      const double shrinkStart = 470.0;
+      const double shrinkEnd = 320.0;
+      final logoFactor =
+          ((width - shrinkEnd) / (shrinkStart - shrinkEnd)).clamp(0.0, 1.0);
+      final logoWidth = logoMaxWidth * logoFactor;
+
       return Row(
         children: [
           // Logo area (left)
-          SizedBox(
-            width: 200,
+          AnimatedContainer(
+            width: logoWidth,
+            duration: const Duration(milliseconds: 220),
+            curve: Curves.easeOut,
             child: GestureDetector(
               onTap: () => widget.onNavigate('/'),
-              child: const Align(
+              child: Align(
                 alignment: Alignment.centerLeft,
-                child: Image(
-                  image: AssetImage('assets/images/upsu.png'),
-                  height: 50,
+                child: AnimatedOpacity(
+                  opacity: logoFactor > 0.05 ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 200),
+                  child: Image(
+                    image: const AssetImage('assets/images/upsu.png'),
+                    height: 50 * logoFactor.clamp(0.5, 1.0),
+                    fit: BoxFit.contain,
+                  ),
                 ),
+              ),
             ),
           ),
-          ),
 
-          // Center links (hidden on narrow screens)
-          if (width >= breakpoint)
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  _HoverText(
-                    label: 'Home',
-                    onTap: () => widget.onNavigate('/'),
-                    active: widget.currentRoute == '/',
-                  ),
-                  _HoverDropdown(
-                    label: 'Shop',
-                    items: shopItems,
-                    onNavigate: (route) => widget.onNavigate(route),
-                    active: widget.currentRoute.startsWith('/product') ||
-                        widget.currentRoute == '/product',
-                  ),
-                  _HoverDropdown(
-                    label: 'The Print Shack',
-                    items: printShackItems,
-                    onNavigate: (route) => widget.onNavigate(route),
-                    active: false,
-                  ),
-                  _HoverText(label: 'SALE!', onTap: () => widget.onNavigate('/sale')),
-                  _HoverText(
-                      label: 'About', onTap: () => widget.onNavigate('/about')),
-                  _HoverText(label: 'UPSU.net', onTap: () {}),
-                ],
+          // Center links
+          if (width >= linksVisibleThreshold)
+            Flexible(
+              fit: FlexFit.loose,
+              child: Center(
+                child: Wrap(
+                  spacing: 18,
+                  runSpacing: 8,
+                  alignment: WrapAlignment.center,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    _HoverText(
+                      label: 'Home',
+                      onTap: () => widget.onNavigate('/'),
+                      active: widget.currentRoute == '/',
+                    ),
+                    _HoverDropdown(
+                      label: 'Shop',
+                      items: shopItems,
+                      onNavigate: (route) => widget.onNavigate(route),
+                      active: widget.currentRoute.startsWith('/product') ||
+                          widget.currentRoute == '/product',
+                    ),
+                    _HoverDropdown(
+                      label: 'The Print Shack',
+                      items: printShackItems,
+                      onNavigate: (route) => widget.onNavigate(route),
+                      active: false,
+                    ),
+                    _HoverText(
+                        label: 'SALE!',
+                        onTap: () => widget.onNavigate('/sale')),
+                    _HoverText(
+                        label: 'About',
+                        onTap: () => widget.onNavigate('/about')),
+                    _HoverText(label: 'UPSU.net', onTap: () {}),
+                  ],
+                ),
               ),
             )
           else
@@ -255,14 +274,9 @@ class _HoverText extends StatefulWidget {
   final String label;
   final VoidCallback onTap;
   final bool active;
-  final TextStyle? style;
 
   const _HoverText(
-      {required this.label,
-      required this.onTap,
-      this.active = false,
-      this.style,
-      Key? key})
+      {required this.label, required this.onTap, this.active = false, Key? key})
       : super(key: key);
 
   @override
@@ -279,12 +293,11 @@ class _HoverTextState extends State<_HoverText> {
     final decoration = widget.active || _hover
         ? TextDecoration.underline
         : TextDecoration.none;
-    final effectiveStyle = (widget.style ??
-            const TextStyle(
-                color: Colors.black,
-                fontFamily: 'Work Sans, sans-serif',
-                fontSize: 18,
-                fontWeight: FontWeight.w100))
+    final effectiveStyle = const TextStyle(
+            color: Colors.black,
+            fontFamily: 'Work Sans, sans-serif',
+            fontSize: 18,
+            fontWeight: FontWeight.w100)
         .copyWith(decoration: decoration);
 
     return MouseRegion(

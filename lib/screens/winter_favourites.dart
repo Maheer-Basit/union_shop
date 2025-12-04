@@ -50,6 +50,7 @@ class WinterFavourites extends StatelessWidget {
               final items = List.generate(
                 6,
                 (i) => {
+                  'id': 'p3',
                   'title': 'Product ${i + 1}',
                   'image': 'assets/images/UOP_Jacket.png',
                   'price': '£${(20 + i * 5).toString()}.00'
@@ -82,11 +83,13 @@ class WinterFavourites extends StatelessWidget {
                       mainAxisSpacing: 20,
                       childAspectRatio: 0.8,
                       children: items.map((m) {
+                        final id = m['id'] ?? 'p1';
                         return ProductTile(
                           image: m['image']!,
                           title: m['title']!,
                           price: m['price']!,
-                          onTap: () => Navigator.pushNamed(ctx, '/product'),
+                          onTap: () => Navigator.pushNamed(ctx, '/product-item',
+                              arguments: id),
                         );
                       }).toList(),
                     ),
