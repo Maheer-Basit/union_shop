@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:union_shop/screens/collection.dart';
 
 class NavBar extends StatefulWidget {
   final String currentRoute;
@@ -93,7 +94,13 @@ class _NavBarState extends State<NavBar> {
                       style: TextStyle(color: Colors.black)),
                   onTap: () {
                     Navigator.pop(ctx);
-                    widget.onSaleTap();
+                    Navigator.push(
+                      ctx,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            const CollectionPage(collectionId: 'c2'),
+                      ),
+                    );
                   },
                 ),
                 ListTile(
@@ -250,7 +257,15 @@ class _NavBarState extends State<NavBar> {
                     ),
                     _HoverText(
                         label: 'SALE!',
-                        onTap: () => widget.onNavigate('/sale')),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  const CollectionPage(collectionId: 'c2'),
+                            ),
+                          );
+                        }),
                     _HoverText(
                         label: 'About',
                         onTap: () => widget.onNavigate('/about')),
