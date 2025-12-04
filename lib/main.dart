@@ -8,7 +8,6 @@ import 'package:union_shop/screens/about_page.dart';
 import 'package:union_shop/screens/collections_page.dart';
 import 'package:union_shop/screens/collection.dart';
 import 'package:union_shop/screens/sign_in.dart';
-import 'package:union_shop/screens/sale.dart';
 import 'package:union_shop/screens/product_item.dart';
 
 void main() {
@@ -39,7 +38,7 @@ class UnionShopApp extends StatelessWidget {
           return CollectionPage(collectionId: id);
         },
         '/sign-in': (context) => const SignIn(),
-        '/sale': (context) => const SalePage(),
+        //'/sale': (context) => const SalePage(),
         '/product-item': (context) => const ProductItemPage(),
       },
     );

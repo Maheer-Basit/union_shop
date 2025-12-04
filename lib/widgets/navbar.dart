@@ -39,90 +39,9 @@ class _NavBarState extends State<NavBar> {
     'Personalisation': '/'
   };
 
-  void _openMobileMenu(BuildContext ctx) {
-    showModalBottomSheet<void>(
-      context: ctx,
-      builder: (ctx) {
-        return SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ListTile(
-                  title: const Text('Home'),
-                  onTap: () {
-                    Navigator.pop(ctx);
-                    widget.onNavigate('/');
-                  },
-                ),
-                ExpansionTile(
-                  title: const Text('Shop'),
-                  children: shopItems.keys.map((label) {
-                    return ListTile(
-                      title: Text(label),
-                      onTap: () {
-                        Navigator.pop(ctx);
-                        final route = shopItems[label]!;
-                        if (route == '/') {
-                          widget.onNavigate('/');
-                        } else {
-                          widget.onNavigate(route);
-                        }
-                      },
-                    );
-                  }).toList(),
-                ),
-                ExpansionTile(
-                  title: const Text('The Print Shack'),
-                  children: printShackItems.keys.map((label) {
-                    return ListTile(
-                      title: Text(label),
-                      onTap: () {
-                        Navigator.pop(ctx);
-                        final route = printShackItems[label]!;
-                        if (route == '/') {
-                          widget.onNavigate('/');
-                        } else {
-                          widget.onNavigate(route);
-                        }
-                      },
-                    );
-                  }).toList(),
-                ),
-                ListTile(
-                  title: const Text('SALE!',
-                      style: TextStyle(color: Colors.black)),
-                  onTap: () {
-                    Navigator.pop(ctx);
-                    Navigator.push(
-                      ctx,
-                      MaterialPageRoute(
-                        builder: (_) =>
-                            const CollectionPage(collectionId: 'c2'),
-                      ),
-                    );
-                  },
-                ),
-                ListTile(
-                  title: const Text('About'),
-                  onTap: () {
-                    Navigator.pop(ctx);
-                    widget.onNavigate('/about');
-                  },
-                ),
-                ListTile(
-                  title: const Text('UPSU.net'),
-                  onTap: () {
-                    Navigator.pop(ctx);
-                  },
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
+  // Mobile dropdown is intentionally removed so you can reimplement
+  // a custom menu button and dropdown. The previous _showMobileDropdown
+  // logic (showMenu + ExpansionTiles) was removed per your request.
 
   Widget _buildIcons(BuildContext ctx, double width) {
     const breakpoint = 750;
@@ -152,11 +71,76 @@ class _NavBarState extends State<NavBar> {
             constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
             onPressed: widget.onCartTap ?? () {},
           ),
-          IconButton(
+          PopupMenuButton<String>(
             icon: const Icon(Icons.menu, size: 32, color: Color(0xFF3d4246)),
-            padding: const EdgeInsets.all(8),
-            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-            onPressed: () => _openMobileMenu(ctx),
+            padding: const EdgeInsets.all(0),
+            onSelected: (value) {
+              switch (value) {
+                case 'home':
+                  widget.onNavigate('/');
+                  break;
+                case 'sale':
+                  Navigator.push(
+                    ctx,
+                    MaterialPageRoute(
+                      builder: (_) => const CollectionPage(collectionId: 'c2'),
+                    ),
+                  );
+                  break;
+                case 'about':
+                  widget.onNavigate('/about');
+                  break;
+                case 'upsu':
+                  widget.onNavigate('/');
+                  break;
+              }
+            },
+            itemBuilder: (menuCtx) => [
+              const PopupMenuItem<String>(value: 'home', child: Text('Home')),
+              PopupMenuItem<String>(
+                enabled: false,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(menuCtx).size.width - 32),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      ExpansionTile(
+                        title: const Text('Shop'),
+                        children: shopItems.keys.map((label) {
+                          return ListTile(
+                            title: Text(label),
+                            onTap: () {
+                              Navigator.of(menuCtx).pop();
+                              final route = shopItems[label]!;
+                              widget.onNavigate(route == '/' ? '/' : route);
+                            },
+                          );
+                        }).toList(),
+                      ),
+                      ExpansionTile(
+                        title: const Text('The Print Shack'),
+                        children: printShackItems.keys.map((label) {
+                          return ListTile(
+                            title: Text(label),
+                            onTap: () {
+                              Navigator.of(menuCtx).pop();
+                              final route = printShackItems[label]!;
+                              widget.onNavigate(route == '/' ? '/' : route);
+                            },
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const PopupMenuItem<String>(value: 'sale', child: Text('SALE!')),
+              const PopupMenuItem<String>(value: 'about', child: Text('About')),
+              const PopupMenuItem<String>(
+                  value: 'upsu', child: Text('UPSU.net')),
+            ],
           ),
         ],
       );
@@ -331,7 +315,7 @@ class _HoverTextState extends State<_HoverText> {
 
 class _HoverDropdown extends StatefulWidget {
   final String label;
-  final Map<String, String> items; // label -> route
+  final Map<String, String> items;
   final bool active;
   final void Function(String route) onNavigate;
 
