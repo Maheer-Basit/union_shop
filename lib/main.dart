@@ -6,7 +6,7 @@ import 'package:union_shop/widgets/hero_section.dart';
 import 'package:union_shop/widgets/products_section.dart';
 import 'package:union_shop/screens/about_page.dart';
 import 'package:union_shop/screens/collections_page.dart';
-import 'package:union_shop/screens/winter_favourites.dart';
+import 'package:union_shop/screens/collection.dart';
 import 'package:union_shop/screens/sign_in.dart';
 import 'package:union_shop/screens/sale.dart';
 import 'package:union_shop/screens/product_item.dart';
@@ -33,7 +33,11 @@ class UnionShopApp extends StatelessWidget {
         '/product': (context) => const ProductPage(),
         '/about': (context) => const AboutPage(),
         '/collections': (context) => const CollectionsPage(),
-        '/winter-favourites': (context) => const WinterFavourites(),
+        
+        '/collection': (context) {
+          final id = ModalRoute.of(context)?.settings.arguments as String? ?? '';
+          return CollectionPage(collectionId: id);
+        },
         '/sign-in': (context) => const SignIn(),
         '/sale': (context) => const SalePage(),
         '/product-item': (context) => const ProductItemPage(),
