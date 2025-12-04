@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:union_shop/services/product_service.dart';
+import 'package:union_shop/models/product.dart';
 
 class CollectionTile extends StatelessWidget {
   final String image;
@@ -51,17 +53,19 @@ class CollectionTile extends StatelessWidget {
 }
 
 class ProductTile extends StatefulWidget {
-  final String image;
-  final String title;
-  final String price;
+  final String? id;
+  final String? image;
+  final String? title;
+  final String? price;
   final VoidCallback? onTap;
   final double imageHeight;
 
   const ProductTile({
     Key? key,
-    required this.image,
-    required this.title,
-    required this.price,
+    this.id,
+    this.image,
+    this.title,
+    this.price,
     this.onTap,
     this.imageHeight = 140,
   }) : super(key: key);
@@ -87,6 +91,15 @@ class _ProductTileState extends State<ProductTile> {
 
   @override
   Widget build(BuildContext context) {
+    final Product? product =
+        widget.id != null ? ProductService.getById(widget.id!) : null;
+    final displayImage =
+        product?.imageUrl ?? widget.image ?? 'assets/images/upsu.png';
+    final displayTitle = product?.name ?? widget.title ?? '';
+    final displayPrice = product != null
+        ? '£${product.price.toStringAsFixed(2)}'
+        : (widget.price ?? '');
+
     return InkWell(
       onTap: widget.onTap,
       child: Column(
@@ -103,7 +116,7 @@ class _ProductTileState extends State<ProductTile> {
                   fit: StackFit.expand,
                   children: [
                     Image.asset(
-                      widget.image,
+                      displayImage,
                       fit: BoxFit.cover,
                     ),
                     AnimatedContainer(
@@ -119,14 +132,14 @@ class _ProductTileState extends State<ProductTile> {
           ),
           const SizedBox(height: 8),
           Text(
-            widget.title,
+            displayTitle,
             style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 4),
           Text(
-            widget.price,
+            displayPrice,
             style: const TextStyle(fontSize: 14, color: Colors.black54),
           ),
         ],

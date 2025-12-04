@@ -16,7 +16,6 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
   String? selectedSize;
   String? selectedColor;
   late String _currentImageUrl;
-  int _selectedThumbIndex = 0;
   final TextEditingController customTextController = TextEditingController();
 
   @override
@@ -66,7 +65,6 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                   onTap: () {
                     setState(() {
                       _currentImageUrl = img;
-                      _selectedThumbIndex = i;
                     });
                   },
                   child: AnimatedContainer(
@@ -75,6 +73,7 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                       border: Border.all(
                           color: selected ? Colors.black : Colors.grey.shade300,
                           width: selected ? 2 : 1),
+
                     ),
                     width: 64,
                     child: ClipRRect(

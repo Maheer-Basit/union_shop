@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:union_shop/services/product_service.dart';
 
 class ProductsSection extends StatelessWidget {
   const ProductsSection({Key? key}) : super(key: key);
@@ -27,34 +28,29 @@ class ProductsSection extends StatelessWidget {
               crossAxisSpacing: 24,
               mainAxisSpacing: 48,
               children: const [
-                ProductCard(
-                  id: 'p1',
-                  title: 'Placeholder Product 1',
-                  price: '£10.00',
-                  imageUrl:
-                      'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
-                ),
-                ProductCard(
-                  id: 'p2',
-                  title: 'Placeholder Product 2',
-                  price: '£15.00',
-                  imageUrl:
-                      'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
-                ),
-                ProductCard(
-                  id: 'p1',
-                  title: 'Placeholder Product 3',
-                  price: '£20.00',
-                  imageUrl:
-                      'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
-                ),
-                ProductCard(
-                  id: 'p2',
-                  title: 'Placeholder Product 4',
-                  price: '£25.00',
-                  imageUrl:
-                      'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
-                ),
+                ProductCard(id: 'p1'),
+                ProductCard(id: 'p5'),
+              ],
+            ),
+            const SizedBox(height: 24),
+            const Text(
+              'Signature Range',
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.black,
+                letterSpacing: 1,
+              ),
+            ),
+            const SizedBox(height: 24),
+            GridView.count(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisCount: MediaQuery.of(context).size.width > 600 ? 2 : 1,
+              crossAxisSpacing: 24,
+              mainAxisSpacing: 48,
+              children: const [
+                ProductCard(id: 'p3'),
+                ProductCard(id: 'p4'),
               ],
             ),
           ],
@@ -66,20 +62,17 @@ class ProductsSection extends StatelessWidget {
 
 class ProductCard extends StatelessWidget {
   final String id;
-  final String title;
-  final String price;
-  final String imageUrl;
 
-  const ProductCard({
-    Key? key,
-    required this.id,
-    required this.title,
-    required this.price,
-    required this.imageUrl,
-  }) : super(key: key);
+  const ProductCard({Key? key, required this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final product = ProductService.getById(id);
+    final displayImage = product?.imageUrl ?? '';
+    final displayTitle = product?.name ?? '';
+    final displayPrice =
+        product != null ? '£${product.price.toStringAsFixed(2)}' : '';
+
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, '/product-item', arguments: id);
@@ -88,8 +81,8 @@ class ProductCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: Image.network(
-              imageUrl,
+            child: Image.asset(
+              displayImage,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) {
                 return Container(
@@ -106,13 +99,13 @@ class ProductCard extends StatelessWidget {
             children: [
               const SizedBox(height: 4),
               Text(
-                title,
+                displayTitle,
                 style: const TextStyle(fontSize: 14, color: Colors.black),
                 maxLines: 2,
               ),
               const SizedBox(height: 4),
               Text(
-                price,
+                displayPrice,
                 style: const TextStyle(fontSize: 13, color: Colors.grey),
               ),
             ],

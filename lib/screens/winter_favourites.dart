@@ -83,11 +83,9 @@ class WinterFavourites extends StatelessWidget {
                       mainAxisSpacing: 20,
                       childAspectRatio: 0.8,
                       children: items.map((m) {
-                        final id = m['id'] ?? 'p1';
+                        final id = (m['id'] as String?) ?? 'p1';
                         return ProductTile(
-                          image: m['image']!,
-                          title: m['title']!,
-                          price: m['price']!,
+                          id: id,
                           onTap: () => Navigator.pushNamed(ctx, '/product-item',
                               arguments: id),
                         );
