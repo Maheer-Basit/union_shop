@@ -59,6 +59,83 @@ class ProductService {
       colors: ['Purple'],
       sizes: ['S', 'M', 'L', 'XL'],
     ),
+    'Beanie': const Product(
+      id: 'p6',
+      name: 'Beanie',
+      imageUrl: 'assets/images/Beanie.png',
+      images: [
+        'assets/images/Beanie.png',
+      ],
+      price: 12.50,
+      colors: ['Red', 'Black'],
+      sizes: [],
+    ),
+    'Bow tie': const Product(
+      id: 'p7',
+      name: 'Bow tie',
+      imageUrl: 'assets/images/Bow_tie.png',
+      images: [
+        'assets/images/Bow_tie.png',
+      ],
+      price: 15.00,
+      colors: ['Navy'],
+      sizes: [],
+    ),
+    'Halloween Tote Bag': const Product(
+      id: 'p8',
+      name: 'Halloween Tote Bag',
+      imageUrl: 'assets/images/Tote_Bag.png',
+      images: [
+        'assets/images/Tote_Bag.png',
+      ],
+      price: 8.99,
+      colors: ['White'],
+      sizes: [],
+    ),
+    'Pen' : const Product(
+      id: 'p9',
+      name: 'UOP Pen',
+      imageUrl: 'assets/images/Pen.png',
+      images: [
+        'assets/images/Pen.png',
+      ],
+      price: 2.49,
+      colors: ['White'],
+      sizes: [],
+    ),
+    'Cap': const Product(
+      id: 'p10',
+      name: 'UOP Cap',
+      imageUrl: 'assets/images/UOP_Cap.png',
+      images: [
+        'assets/images/UOP_Cap.png',
+      ],
+      price: 14.99,
+      colors: ['Black'],
+      sizes: [],
+    ),
+    'Badge': const Product(
+      id: 'p11',
+      name: 'Graduation Badge',
+      imageUrl: 'assets/images/Badge.png',
+      images: [
+        'assets/images/Badge.png',
+      ],
+      price: 1.99,
+      colors: ['Multi'],
+      sizes: [],
+    ),
+    'Graduation Capybara': const Product(
+      id: 'p12',
+      name: 'Graduation Capybara',
+      imageUrl: 'assets/images/Graduation.png',
+      images: [
+        'assets/images/Graduation.png',
+      ],
+      price: 9.99,
+      colors: ['Multi'],
+      sizes: [],
+    ),
   };
   static Product? getById(String id) {
     // Try direct lookup by map key first

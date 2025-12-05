@@ -26,6 +26,36 @@ class CollectionsService {
       imageUrl: 'assets/images/UOP_T_Shirt_W.png',
       productIds: ['p1', 'p5'],
     ),
+    'Merchandise': const Collections(
+      id: 'c5',
+      title: 'Merchandise',
+      imageUrl: 'assets/images/UOP_T_Shirt_B.png',
+      productIds: ['p6', 'p7', 'p9'],
+    ),
+    'Signature and Essential Range': const Collections(
+      id: 'c6',
+      title: 'Signature and Essential Range',
+      imageUrl: 'assets/images/UOP_SH.png',
+      productIds: ['p1', 'p3', 'p4', 'p5'],
+    ),
+    'Portsmouth City Collection': const Collections(
+      id: 'c7',
+      title: 'Portsmouth City Collection',
+      imageUrl: 'assets/images/Portsmouth.png',
+      productIds: ['p8', 'p10'],
+    ),
+    'Pride Collection': const Collections(
+      id: 'c8',
+      title: 'Pride Collection',
+      imageUrl: 'assets/images/Pride_T_Shirt.png',
+      productIds: ['p11', 'p12'],
+    ),
+    'Graduation' : const Collections(
+      id: 'c9',
+      title: 'Graduation',
+      imageUrl: 'assets/images/Graduation_Hoodie.png',
+      productIds: ['p11', 'p12', 'p9'],
+    ),
   };
 
   Future<Collections?> fetchById(String id) async {
