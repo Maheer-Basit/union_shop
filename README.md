@@ -20,25 +20,46 @@ flutter test
 
 ## What's in the Project
 
-The Union Shop is organized into clear folders so it's easy to find things:
+The Union Shop is organized into clear folders so it's easy to find things. Below is a concise inventory of the actual screens and reusable widgets currently present in the project
 
 **Main Screens** (`lib/screens/`)
-- **Collections Page** — shows a grid of collection tiles with images and titles. It has the navigation bar at the top, a page title, and a footer at the bottom.
-- **About Page** — tells visitors about the Union Shop. Same layout as Collections: navbar, title, content, and footer.
-- **Winter Favourites** — another page to showcase seasonal products.
+- `collections_page.dart` — Top-level collections index that shows collection tiles and links into each collection.
+- `collection.dart` — Single collection view: shows title, description area and a grid of product tiles for a given collection id.
+- `about_page.dart` — Simple About page with site information and contact/support links.
+- `product_item.dart` — Individual product details page (used with `'/product-item'` route), shows images, product info and purchase controls.
+- `sign_in.dart` — Sign-in screen stub used for account/login flows.
+- `print_shack_about.dart` — Content page for "The Print Shack" describing the service and examples.
+- `print_shack_personalisation.dart` — Personalisation/customisation flow for print products
+**Building Blocks / Widgets** (`lib/widgets/`)
+- `navbar.dart` — The site navigation bar used across pages. Supports desktop hover dropdowns and a mobile popup menu with nested sections.
+- `mainheader.dart` — A wrapper header that places `NavBar` and handles per-page routing callbacks.
+- `hero_section.dart` — The home page hero/banner with auto-advancing slides and CTA buttons.
+- `products_section.dart` — Homepage products grid (uses `tile.dart` for collection/product tiles).
+- `tile.dart` — Reusable collection/product tile with image and title overlay, used by collections and product lists.
+- `item.dart` — Product item content widget used by `product_item.dart` (includes the responsive image column, options and quantity controls).
+- `print.dart` — `PrintCustomizer` widget for print product previews, thumbnails and personalization controls.
+- `filter.dart` — Small UI for filtering and sorting product grids.
+- `footer.dart` — Page footer with informational columns and social links.
 
-**Building Blocks** (`lib/widgets/`)
-- **Navigation Bar** (`navbar.dart`) — the menu at the top of each page with links like "Home", "Shop", "About", etc. On desktop, links get an underline when you hover over them. On small screens, it hides itself so the mobile menu takes over.
-- **Hero Section** (`hero_section.dart`) — the large banner at the top of the home page that automatically cycles through different images every few seconds, showing messages like "Essential range", "The Print Shack", etc.
-- **Footer** (`footer.dart`) — appears at the bottom of every page with three columns of information and social media links. On small screens, these columns stack on top of each other.
-- **Products Section** (`products_section.dart`) — a grid showing products in a nice layout with product cards.
-- **Collection Tile** (`tile.dart`) — a small reusable piece that displays a collection image with a title on top. Used throughout the site.
+**Models & Services** (`lib/models/` and `lib/services/`)
+- `models/` — Data model classes such as `product.dart` and `collections.dart` define the shape of products and collections used across the app. Models are intentionally lightweight and used by UI widgets and services for typing and sample data.
+- `services/` — Small in-memory services such as `product_service.dart` and `collections_service.dart` provide mock data and convenience methods to fetch products and collections. These are useful for development and for replacing with real backends later.
 
-**Pages & Routes** (`lib/main.dart`)
-- The main file sets up all the pages and handles navigation. It's the entry point where everything starts.
+How Screens Use Widgets
+- Screens in `lib/screens/` are thin composition layers: they fetch or receive model data (via services or route arguments) and assemble widgets from `lib/widgets/` to render complete pages. For example, `collection.dart` uses `CollectionsService` (to load a `Collections` model) and then renders a grid of `tile.dart` widgets; `product_item.dart` uses the `item.dart` widget to render the product detail UI along with header/footer.
+
+**Screenshots**
+-Home page
+![alt text](image.png)
+-Collections
+![alt text](image-1.png)
+-Footer
+![alt text](image-2.png)
+-Product
+![alt text](image-3.png)
 
 **Tests** (`test/`)
-- Tests make sure everything works correctly. The project includes tests for hover effects, navigation menus, and footer content.
+- Project tests exercise core UI behaviors (hover effects, navigation and layout) and help detect regressions when modifying header, hero, or tiles.
 
 
 
