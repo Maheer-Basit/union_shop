@@ -182,9 +182,9 @@ class _HeroSectionState extends State<HeroSection> {
                           borderRadius: BorderRadius.zero,
                         ),
                       ),
-                      child: const Text(
-                        'BROWSE PRODUCTS',
-                        style: TextStyle(fontSize: 14, letterSpacing: 1),
+                      child: Text(
+                        _buttonLabelForIndex(_current),
+                        style: const TextStyle(fontSize: 14, letterSpacing: 1),
                       ),
                     ),
                   ],
@@ -222,5 +222,16 @@ class _HeroSectionState extends State<HeroSection> {
         ],
       ),
     );
+  }
+
+  String _buttonLabelForIndex(int i) {
+    const labels = [
+      'BROWSE COLLECTION',
+      'FIND OUT MORE',
+      "ORDER DOMINO'S PIZZA NOW",
+      'FIND YOUR STUDENT ACCOMMODATION',
+    ];
+    if (i >= 0 && i < labels.length) return labels[i];
+    return 'BROWSE PRODUCTS';
   }
 }
