@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:union_shop/screens/collection.dart';
+import 'package:union_shop/screens/sign_in.dart';
 
 class NavBar extends StatefulWidget {
   final String currentRoute;
@@ -63,7 +64,10 @@ class _NavBarState extends State<NavBar> {
               padding: const EdgeInsets.all(8),
               constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
               onPressed: () {
-                Navigator.pushNamed(ctx, '/sign-in');
+                Navigator.push(
+                  ctx,
+                  MaterialPageRoute(builder: (_) => const SignIn()),
+                );
               }),
           IconButton(
             icon: const Icon(Icons.shopping_bag_outlined,
@@ -162,7 +166,12 @@ class _NavBarState extends State<NavBar> {
               size: 32, color: Color(0xFF3d4246)),
           padding: const EdgeInsets.all(8),
           constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-          onPressed: widget.onAccountTap ?? () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const SignIn()),
+            );
+          },
         ),
         IconButton(
           icon: const Icon(Icons.shopping_bag_outlined,
