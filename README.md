@@ -53,10 +53,13 @@ How Screens Use Widgets
 
 ![alt text](image.png)
 -Collections
+
 ![alt text](image-1.png)
 -Footer
+
 ![alt text](image-2.png)
 -Product
+
 ![alt text](image-3.png)
 
 **Tests** (`test/`)
