@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:union_shop/screens/collection.dart';
 import 'package:union_shop/screens/sign_in.dart';
+import 'package:union_shop/screens/print_shack_about.dart';
 
 class NavBar extends StatefulWidget {
   final String currentRoute;
@@ -37,7 +38,7 @@ class _NavBarState extends State<NavBar> {
   };
 
   static const printShackItems = <String, String>{
-    'About': '/',
+    'About': '/print-shack',
     'Personalisation': '/'
   };
 
@@ -131,6 +132,16 @@ class _NavBarState extends State<NavBar> {
                             title: Text(label),
                             onTap: () {
                               Navigator.of(menuCtx).pop();
+
+                              if (label == 'About') {
+                                Navigator.push(
+                                  menuCtx,
+                                  MaterialPageRoute(
+                                      builder: (_) => const PrintShackAbout()),
+                                );
+                                return;
+                              }
+
                               final route = printShackItems[label]!;
                               widget.onNavigate(route == '/' ? '/' : route);
                             },
@@ -246,7 +257,17 @@ class _NavBarState extends State<NavBar> {
                     _HoverDropdown(
                       label: 'The Print Shack',
                       items: printShackItems,
-                      onNavigate: (route) => widget.onNavigate(route),
+                      onNavigate: (route) {
+                        if (route == '/print-shack') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const PrintShackAbout()),
+                          );
+                          return;
+                        }
+                        widget.onNavigate(route);
+                      },
                       active: false,
                     ),
                     _HoverText(
