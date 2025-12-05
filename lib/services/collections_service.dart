@@ -47,13 +47,13 @@ class CollectionsService {
     'Pride Collection': const Collections(
       id: 'c8',
       title: 'Pride Collection',
-      imageUrl: 'assets/images/Pride_T_Shirt.png',
+      imageUrl: 'assets/images/UOP_T_Shirt.png',
       productIds: ['p11', 'p12'],
     ),
     'Graduation' : const Collections(
       id: 'c9',
       title: 'Graduation',
-      imageUrl: 'assets/images/Graduation_Hoodie.png',
+      imageUrl: 'assets/images/Bow_Tie.png',
       productIds: ['p11', 'p12', 'p9'],
     ),
   };

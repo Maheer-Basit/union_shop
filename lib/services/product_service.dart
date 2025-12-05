@@ -84,15 +84,15 @@ class ProductService {
     'Halloween Tote Bag': const Product(
       id: 'p8',
       name: 'Halloween Tote Bag',
-      imageUrl: 'assets/images/Tote_Bag.png',
+      imageUrl: 'assets/images/Halloween.png',
       images: [
-        'assets/images/Tote_Bag.png',
+        'assets/images/Halloween.png',
       ],
       price: 8.99,
       colors: ['White'],
       sizes: [],
     ),
-    'Pen' : const Product(
+    'Pen': const Product(
       id: 'p9',
       name: 'UOP Pen',
       imageUrl: 'assets/images/Pen.png',

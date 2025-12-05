@@ -29,13 +29,13 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> {
   static const shopItems = <String, String>{
-    'Clothing': '/',
-    'Merchandise': '/',
-    'Halloween 🎃': '/',
-    'Signature & Essential Range': '/',
-    'Portsmouth City Collection': '/',
-    'Pride Collection 🏳️‍🌈': '/',
-    'Graduation 🎓': '/'
+    'Clothing': 'collection:c3',
+    'Merchandise': 'collection:c5',
+    'Halloween 🎃': 'product:p8',
+    'Signature & Essential Range': 'collection:c6',
+    'Portsmouth City Collection': 'collection:c7',
+    'Pride Collection 🏳️‍🌈': 'collection:c8',
+    'Graduation 🎓': 'collection:c9'
   };
 
   static const printShackItems = <String, String>{
@@ -120,8 +120,28 @@ class _NavBarState extends State<NavBar> {
                             title: Text(label),
                             onTap: () {
                               Navigator.of(menuCtx).pop();
-                              final route = shopItems[label]!;
-                              widget.onNavigate(route == '/' ? '/' : route);
+                              final action = shopItems[label]!;
+                              if (action.startsWith('collection:')) {
+                                final id = action.split(':').last;
+                                Navigator.push(
+                                  menuCtx,
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        CollectionPage(collectionId: id),
+                                  ),
+                                );
+                                return;
+                              }
+
+                              if (action.startsWith('product:')) {
+                                final pid = action.split(':').last;
+                                Navigator.pushNamed(menuCtx, '/product-item',
+                                    arguments: pid);
+                                return;
+                              }
+
+                              // Fallback to the string route handler
+                              widget.onNavigate(action == '/' ? '/' : action);
                             },
                           );
                         }).toList(),
@@ -261,7 +281,27 @@ class _NavBarState extends State<NavBar> {
                     _HoverDropdown(
                       label: 'Shop',
                       items: shopItems,
-                      onNavigate: (route) => widget.onNavigate(route),
+                      onNavigate: (route) {
+                        // route is encoded as 'collection:<id>' or 'product:<id>'
+                        if (route.startsWith('collection:')) {
+                          final id = route.split(':').last;
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) =>
+                                      CollectionPage(collectionId: id)));
+                          return;
+                        }
+
+                        if (route.startsWith('product:')) {
+                          final pid = route.split(':').last;
+                          Navigator.pushNamed(context, '/product-item',
+                              arguments: pid);
+                          return;
+                        }
+
+                        widget.onNavigate(route == '/' ? '/' : route);
+                      },
                       active: widget.currentRoute.startsWith('/product') ||
                           widget.currentRoute == '/product',
                     ),
