@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:union_shop/screens/collection.dart';
 
 class NavBar extends StatefulWidget {
@@ -91,7 +92,7 @@ class _NavBarState extends State<NavBar> {
                   widget.onNavigate('/about');
                   break;
                 case 'upsu':
-                  widget.onNavigate('/');
+                  launchUrl(Uri.parse('https://upsu.net/'));
                   break;
               }
             },
@@ -253,7 +254,11 @@ class _NavBarState extends State<NavBar> {
                     _HoverText(
                         label: 'About',
                         onTap: () => widget.onNavigate('/about')),
-                    _HoverText(label: 'UPSU.net', onTap: () {}),
+                    _HoverText(
+                        label: 'UPSU.net',
+                        onTap: () {
+                          launchUrl(Uri.parse('https://upsu.net/'));
+                        }),
                   ],
                 ),
               ),
