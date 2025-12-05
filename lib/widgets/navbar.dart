@@ -3,6 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:union_shop/screens/collection.dart';
 import 'package:union_shop/screens/sign_in.dart';
 import 'package:union_shop/screens/print_shack_about.dart';
+import 'package:union_shop/screens/print_shack_personalisation.dart';
 
 class NavBar extends StatefulWidget {
   final String currentRoute;
@@ -39,7 +40,7 @@ class _NavBarState extends State<NavBar> {
 
   static const printShackItems = <String, String>{
     'About': '/print-shack',
-    'Personalisation': '/'
+    'Personalisation': '/print-personalisation'
   };
 
   // Mobile dropdown is intentionally removed so you can reimplement
@@ -138,6 +139,16 @@ class _NavBarState extends State<NavBar> {
                                   menuCtx,
                                   MaterialPageRoute(
                                       builder: (_) => const PrintShackAbout()),
+                                );
+                                return;
+                              }
+
+                              if (label == 'Personalisation') {
+                                Navigator.push(
+                                  menuCtx,
+                                  MaterialPageRoute(
+                                      builder: (_) =>
+                                          const PrintShackPersonalisation()),
                                 );
                                 return;
                               }
@@ -263,6 +274,15 @@ class _NavBarState extends State<NavBar> {
                             context,
                             MaterialPageRoute(
                                 builder: (_) => const PrintShackAbout()),
+                          );
+                          return;
+                        }
+                        if (route == '/print-personalisation') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) =>
+                                    const PrintShackPersonalisation()),
                           );
                           return;
                         }

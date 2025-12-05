@@ -16,7 +16,7 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
   String? selectedSize;
   String? selectedColor;
   late String _currentImageUrl;
-  final TextEditingController customTextController = TextEditingController();
+  int quantity = 1;
 
   @override
   void initState() {
@@ -71,9 +71,9 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                     duration: const Duration(milliseconds: 150),
                     decoration: BoxDecoration(
                       border: Border.all(
-                          color: selected ? Colors.black : Colors.grey.shade300,
-                          width: selected ? 2 : 1),
-
+                        color: selected ? Colors.black : Colors.grey.shade300,
+                        width: selected ? 2 : 1,
+                      ),
                     ),
                     width: 64,
                     child: ClipRRect(
@@ -91,7 +91,6 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
 
   @override
   void dispose() {
-    customTextController.dispose();
     super.dispose();
   }
 
@@ -107,31 +106,37 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
           padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
           child: LayoutBuilder(builder: (ctx, constraints) {
             final isNarrow = constraints.maxWidth < 700;
-            return isNarrow
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: _buildContent(isNarrow),
-                  )
-                : Row(
+            if (isNarrow) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _buildImageColumn(),
+                  const SizedBox(height: 12),
+                  ..._buildContent(isNarrow),
+                ],
+              );
+            }
+
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 420),
+                    child: _buildImageColumn(),
+                  ),
+                ),
+                const SizedBox(width: 24),
+                Expanded(
+                  flex: 7,
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        flex: 4,
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 420),
-                          child: _buildImageColumn(),
-                        ),
-                      ),
-                      const SizedBox(width: 24),
-                      Expanded(
-                        flex: 7,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: _buildContent(isNarrow),
-                        ),
-                      ),
-                    ],
-                  );
+                    children: _buildContent(isNarrow),
+                  ),
+                ),
+              ],
+            );
           }),
         ),
       ),
@@ -199,15 +204,43 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
               children: [
                 const Text('Quantity', style: TextStyle(fontSize: 14)),
                 const SizedBox(height: 6),
-                TextField(
-                  controller: customTextController,
-                  decoration: const InputDecoration(
-                    hintText: '1',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.zero),
-                    isDense: true,
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                  ),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 6,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 36,
+                      height: 36,
+                      child: IconButton(
+                        onPressed: () => setState(() {
+                          if (quantity > 1) quantity -= 1;
+                        }),
+                        icon: const Icon(Icons.remove, size: 20),
+                        padding: EdgeInsets.zero,
+                        splashRadius: 18,
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey.shade300),
+                      ),
+                      child: Text(quantity.toString(),
+                          style: const TextStyle(fontSize: 16)),
+                    ),
+                    SizedBox(
+                      width: 36,
+                      height: 36,
+                      child: IconButton(
+                        onPressed: () => setState(() => quantity += 1),
+                        icon: const Icon(Icons.add, size: 20),
+                        padding: EdgeInsets.zero,
+                        splashRadius: 18,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
