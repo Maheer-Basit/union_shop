@@ -50,6 +50,7 @@ How Screens Use Widgets
 
 **Screenshots**
 -Home page
+
 ![alt text](image.png)
 -Collections
 ![alt text](image-1.png)
